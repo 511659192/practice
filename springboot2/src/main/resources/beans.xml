@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:user="http://www.ym.com/schema/user"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	   http://www.ym.com/schema/user http://www.ym.com/schema/user.xsd"
+
+	   default-autowire="byName">
+
+	<bean class="com.example.demo.spring.MyInstantiationAwareBeanPostProcessor"></bean>
+
+
+	<bean id="msgHandler" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>application.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="person" class="com.example.demo.vo.Person" abstract="true"></bean>
+
+	<bean id="student" class="com.example.demo.vo.Student" parent="person">
+		<property name="id" value="1111"/>
+	</bean>
+
+	<bean id="entity" name="entity2" class="com.example.demo.vo.Entity">
+		<property name="user">
+			<user:user email="userEmail" userName="userUserName"></user:user>
+		</property>
+		<property name="id" value="11"></property>
+		<property name="map" ref="map"></property>
+		<property name="list">
+			<util:list>
+				<value>111</value>
+			</util:list>
+		</property>
+	</bean>
+
+	<bean id="map" class="java.util.HashMap">
+			<constructor-arg>
+				<map>
+					<entry key="11" value="11">
+					</entry>
+				</map>
+			</constructor-arg>
+	</bean>
+
+	<alias name="entity" alias="entityAlias"></alias>
+
+	<user:user id="userTag" userName="userName" email="email"></user:user>
+
+	<bean id="testA" class="com.example.demo.spring.TestA">
+		<!--<property name="testB" ref="testB"></property>-->
+	</bean>
+
+	<bean id="testB" class="com.example.demo.spring.TestB">
+		<!--<property name="testC" ref="testC"></property>-->
+	</bean>
+
+	<bean id="testC" class="com.example.demo.spring.TestC" autowire="byType">
+		<!--<property name="testA" ref="testA"></property>-->
+	</bean>
+</beans>
