@@ -18,6 +18,7 @@ public class DefaultContentHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+
         StringBuilder builder = new StringBuilder();
         int length = attributes.getLength();
         if (length > 0) {

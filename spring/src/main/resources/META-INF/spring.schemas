@@ -1,1 +1,3 @@
-http\://www.springframework.org/schema/beans/spring-beans.xsd=com/spring/beans/factory/xml/spring-beans.xsd
+http\://www.springframework.org/schema/beans/spring-beans.xsd=com/spring/beans/factory/xml/xsd/spring-beans.xsd
+http\://www.springframework.org/schema/tool/spring-tool.xsd=com/spring/beans/factory/xml/xsd/spring-tool.xsd
+http\://www.springframework.org/schema/util/spring-util.xsd=com/spring/beans/factory/xml/xsd/spring-util.xsd
