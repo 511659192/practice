@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MyEntityResolver implements EntityResolver {
 
     private volatile Map<String, String> schemaMappings;
-    private final String schemaMappingsLocation = "META-INF/saxDemo.schemas";
+    private final String schemaMappingsLocation = "META-INF/spring.schemas";
 
     private static final Log logger = LogFactory.getLog(MyEntityResolver.class);
     @Override

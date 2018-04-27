@@ -12,7 +12,8 @@ public class XmlTest {
 
     public static void main(String[] args) {
         XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("beans.xml"));
-        factory.getBean("testA");
+        TestAnnotaiton testAnnotaiton = (TestAnnotaiton) factory.getBean("testAnnotaiton");
+        testAnnotaiton.test();
 //        User user = (User) factory.getBean("userTag");
 //        System.out.println(JSON.toJSONString(user));
     }

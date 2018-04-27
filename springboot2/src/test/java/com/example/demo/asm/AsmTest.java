@@ -1,13 +1,9 @@
 package com.example.demo.asm;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.*;
 
-import javassist.util.proxy.DefineClassHelper;
 import jdk.internal.org.objectweb.asm.*;
 
-import static org.objectweb.asm.Opcodes.*;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Created by ym on 2018/4/1.
@@ -18,7 +14,7 @@ public class AsmTest implements Opcodes {
 
 //        Class<?> clazz = DefineClassHelper.toClass("com.example.demo.classConstruct.Person2", AsmTest.class.getClassLoader(), AsmTest.class.getProtectionDomain(), dump());
 //        Object instance = clazz.newInstance();
-        new FileOutputStream(new File("d:/Person21.class")).write(dump());
+        new FileOutputStream(new File("Person21.class")).write(dump());
 
     }
     public static byte[] dump3 () throws Exception {
