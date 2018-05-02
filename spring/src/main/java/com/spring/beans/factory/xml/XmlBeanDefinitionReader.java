@@ -3,11 +3,9 @@ package com.spring.beans.factory.xml;
 import com.spring.beans.factory.xml.handler.DefaultContentHandler;
 import com.spring.beans.factory.xml.handler.DefaultEntityResolver;
 import com.spring.beans.factory.xml.handler.DefaultErrorHandler;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -25,21 +23,29 @@ public class XmlBeanDefinitionReader {
 
     private static final Logger logger = LoggerFactory.getLogger(XmlBeanDefinitionReader.class);
 
-    public XmlBeanDefinitionReader() {
+    private BeanDefinitionRegistry registry;
+    private XmlReaderContext xmlReaderContext = new XmlReaderContext(this);
+
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
+        this.registry = registry;
     }
 
-    public void parse(InputSource input) throws Exception {
+    public void parse(InputSource input) throws SAXException, ParserConfigurationException, IOException {
         SAXParserFactory saxParserFactory = createSaxParserFactory();
         SAXParser parser = createSaxParser(saxParserFactory);
         XMLReader reader = createXmlReader(parser);
-        reader.parse(input);
+        try {
+            reader.parse(input);
+        } finally {
+            xmlReaderContext.clearStack();
+        }
     }
 
     private XMLReader createXmlReader(SAXParser parser) throws SAXException {
         XMLReader reader = parser.getXMLReader();
-        reader.setContentHandler(new DefaultContentHandler()); // 内容处理器
+        reader.setContentHandler(new DefaultContentHandler(xmlReaderContext)); // 内容处理器
         reader.setEntityResolver(new DefaultEntityResolver()); // schama解析器
-        reader.setErrorHandler(new DefaultErrorHandler()); // 异常处理器
+        reader.setErrorHandler(new DefaultErrorHandler(xmlReaderContext)); // 异常处理器
         return reader;
     }
 
@@ -54,5 +60,9 @@ public class XmlBeanDefinitionReader {
         saxParserFactory.setValidating(true); // 是否验证xml，默认false
         saxParserFactory.setNamespaceAware(true); // 是否展示命名空间 默认false
         return saxParserFactory;
+    }
+
+    public BeanDefinitionRegistry getRegistry() {
+        return registry;
     }
 }

@@ -5,12 +5,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="map1" class="java.util.HashMap">
-        <constructor-arg>
-            <util:map key-type="java.lang.String" value-type="java.lang.String">
-                <entry key="key" value="value"></entry>
-            </util:map>
-        </constructor-arg>
 
+    <bean id="entity" class="com.spring.beans.factory.Entity">
+        <property name="name">
+            <value>name</value>
+        </property>
+        <property name="entity2">
+            <ref bean="entity2"></ref>
+        </property>
+        <property name="name2" value="name2"></property>
+        <property name="entity" ref="entity2"></property>
+    </bean>
+
+    <bean id="entity2" class="com.spring.beans.factory.Entity2">
     </bean>
 </beans>

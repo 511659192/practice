@@ -1,6 +1,7 @@
 package com.spring.beans.factory.xml.handler;
 
-import org.apache.commons.lang3.StringUtils;
+import com.spring.beans.factory.config.ValueHolder;
+import com.spring.beans.factory.xml.XmlReaderContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -11,38 +12,35 @@ import org.xml.sax.helpers.DefaultHandler;
 public class DefaultContentHandler extends DefaultHandler {
 
 
+    private XmlReaderContext xmlReaderContext;
+
+    public DefaultContentHandler(XmlReaderContext xmlReaderContext) {
+        this.xmlReaderContext = xmlReaderContext;
+    }
+
     @Override
     public void startDocument() throws SAXException {
-        System.out.println("MyDefalutHandler.startDocument()");
+        System.out.println("DefaultContentHandler.startDocument()");
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        System.out.println(String.format("startElement uri=%s localName=%s qname=%s attr=%s", uri, localName, qName, HandlerHelper.getAttrubiteString(attributes)));
 
-        StringBuilder builder = new StringBuilder();
-        int length = attributes.getLength();
-        if (length > 0) {
-            for (int i = 0; i < length; i++) {
-                builder.append(attributes.getLocalName(i).trim())
-                        .append(":")
-                        .append(attributes.getValue(i).trim())
-                        .append(" ");
-            }
-        }
-
-        System.out.println(String.format("uri=%s localName=%s qname=%s attr=%s", uri, localName, qName, builder));
+        new DefaultParserChain(xmlReaderContext).parseStartElement(uri, localName, qName, attributes);
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         String content = new String(ch, start, length);
-        if (StringUtils.isNotBlank(content)) {
-            System.out.println("MyDefalutHandler.characters()->>>" + content);
-        }
+        ValueHolder valueHolder = xmlReaderContext.peekFromStack();
+        valueHolder.setValue(content);
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
+        System.out.println(String.format("endElement uri=%s localName=%s qname=%s", uri, localName, qName));
+        new DefaultParserChain(xmlReaderContext).parseEndElement(uri, localName, qName);
     }
 
     @Override
