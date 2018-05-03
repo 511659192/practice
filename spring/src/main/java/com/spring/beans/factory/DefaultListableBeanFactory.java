@@ -1,4 +1,4 @@
-package com.spring.beans.factory.xml;
+package com.spring.beans.factory;
 
 import com.google.common.base.Preconditions;
 import com.spring.beans.factory.config.BeanDefinition;

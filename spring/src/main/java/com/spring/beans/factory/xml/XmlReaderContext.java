@@ -8,7 +8,6 @@ import java.util.Stack;
 public class XmlReaderContext {
 
     private XmlBeanDefinitionReader xmlBeanDefinitionReader;
-    private NamespaceHandlerResolver namespaceHandlerResolver = new DefaultNamespaceHandlerResolver();
     private Stack<Object> stack = new Stack();
 
     public XmlReaderContext(XmlBeanDefinitionReader xmlBeanDefinitionReader) {

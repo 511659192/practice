@@ -7,6 +7,7 @@ import com.sun.org.apache.regexp.internal.REUtil;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,12 +21,15 @@ public class BeanDefinition {
     private String initMethod;
     private String destoryMethod;
     private List<PropertyValue> propertyValues = Lists.newArrayList();
+    private ConstructorArgumentValues constructorArgumentValues;
     private String beanName;
     private List<String> alias;
+    public Object constructorArgumentLock = new Object();
+    public Object resolvedConstructorOrFactoryMethod;
 
-    public void setBeanClassName(@Nullable String beanClassName) {
-        this.beanClass = beanClassName;
-    };
+    public <T> T getResolvedConstructorOrFactoryMethod() {
+        return (T) resolvedConstructorOrFactoryMethod;
+    }
 
     @Nullable
     public String getBeanClassName() {
@@ -40,7 +44,7 @@ public class BeanDefinition {
     }
 
     public boolean hasPropertyValues() {
-        return propertyValues != null && propertyValues.size() > 0;
+        return !propertyValues.isEmpty();
     }
 
     public void addPropertyValue(PropertyValue propertyValue) {
@@ -60,5 +64,13 @@ public class BeanDefinition {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("class not found ", e);
         }
+    }
+
+    public boolean hasConstractArgumentValues() {
+        return this.constructorArgumentValues != null && !this.constructorArgumentValues.isEmpty();
+    }
+
+    public boolean hasMethodOverrides() {
+        return false;
     }
 }

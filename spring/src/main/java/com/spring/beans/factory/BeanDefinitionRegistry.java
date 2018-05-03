@@ -1,5 +1,6 @@
-package com.spring.beans.factory.xml;
+package com.spring.beans.factory;
 
+import com.spring.beans.factory.AliasRegistry;
 import com.spring.beans.factory.config.BeanDefinition;
 
 /**

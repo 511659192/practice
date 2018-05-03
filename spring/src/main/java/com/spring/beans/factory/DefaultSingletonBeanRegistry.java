@@ -1,4 +1,4 @@
-package com.spring.beans.factory.xml;
+package com.spring.beans.factory;
 
 
 import java.util.*;

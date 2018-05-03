@@ -3,7 +3,7 @@ package com.spring.beans.factory.xml.handler.parsers;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.spring.beans.factory.xml.BeanDefinitionRegistry;
+import com.spring.beans.factory.BeanDefinitionRegistry;
 import com.spring.beans.factory.config.BeanDefinition;
 import com.spring.beans.factory.xml.XmlReaderContext;
 import org.apache.commons.lang3.StringUtils;

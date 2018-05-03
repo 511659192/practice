@@ -1,5 +1,6 @@
 package com.spring.beans.factory.xml;
 
+import com.spring.beans.factory.BeanDefinitionRegistry;
 import com.spring.beans.factory.xml.handler.DefaultContentHandler;
 import com.spring.beans.factory.xml.handler.DefaultEntityResolver;
 import com.spring.beans.factory.xml.handler.DefaultErrorHandler;

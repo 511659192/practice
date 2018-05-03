@@ -10,7 +10,7 @@ public class ValueHolder {
 
     private Object value;
 
-    private String valueType;
+    private String type;
 
     public ValueHolder(Object value) {
         this.value = value;

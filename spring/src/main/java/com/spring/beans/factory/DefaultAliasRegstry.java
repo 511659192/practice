@@ -1,6 +1,7 @@
-package com.spring.beans.factory.xml;
+package com.spring.beans.factory;
 
 import com.google.common.base.Preconditions;
+import com.spring.beans.factory.AliasRegistry;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;

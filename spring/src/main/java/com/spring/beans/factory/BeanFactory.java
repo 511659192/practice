@@ -1,4 +1,4 @@
-package com.spring.beans.factory.xml;
+package com.spring.beans.factory;
 
 /**
  * Created by ym on 2018/5/2.
