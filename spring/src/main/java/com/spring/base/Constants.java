@@ -19,4 +19,5 @@ public class Constants {
     public static final String DESTROY_METHOD_ATTRIBUTE = "destroy-method";
     public static final String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
     public static final String INDEX_ATTRIBUTE = "index";
+    public static final String AUTOWIRE_ATTRIBUTE = "autowire";
 }

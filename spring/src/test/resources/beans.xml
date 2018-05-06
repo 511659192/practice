@@ -18,5 +18,7 @@
     </bean>
 
     <bean id="entity2" class="com.spring.beans.factory.Entity2">
+        <property name="name" value="name2"></property>
+        <property name="entity" ref="entity"></property>
     </bean>
 </beans>

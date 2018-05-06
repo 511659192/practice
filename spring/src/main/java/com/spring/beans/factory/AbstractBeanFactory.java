@@ -1,8 +1,21 @@
 package com.spring.beans.factory;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
+import com.spring.beans.BeanDefinitionValueResolver;
 import com.spring.beans.BeanWrapper;
 import com.spring.beans.BeanWrapperImpl;
 import com.spring.beans.factory.config.BeanDefinition;
+import com.spring.beans.factory.config.PropertyValue;
+import org.apache.commons.lang3.StringUtils;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ym on 2018/5/2.
@@ -29,7 +42,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     }
 
     private Object createBean(String beanName, BeanDefinition beanDefinition) {
-        Class<?> clazz = resolveBeanClass(beanDefinition, beanName);
         Object bean = null;
         try {
             bean = resolveBeforeInstantiation(beanName, beanDefinition);
@@ -44,10 +56,57 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         return bean;
     }
 
-    private Object doCreateBean(String beanName, BeanDefinition beanDefinition) {
+    private Object doCreateBean(final String beanName, final BeanDefinition beanDefinition) {
         BeanWrapper beanWrapper = createBeanInstance(beanName, beanDefinition);
+        final Object bean = beanWrapper.getWrappedObject();
+        boolean earlySingletonExposure = isSingletonCurrentlyInCreation(beanName);
+        if (earlySingletonExposure) {
+            addSingletonFactory(beanName, new ObjectFactory<Object>() {
+                @Override
+                public Object getObject() throws RuntimeException {
+                    return getEarlyBeanReference(beanName, beanDefinition, bean);
+                }
+            });
+        }
 
-        return null;
+        Object exposedObject = bean;
+        populateBean(beanName, beanDefinition, beanWrapper);
+
+        return beanWrapper.getWrappedObject();
+    }
+
+    private void populateBean(String beanName, BeanDefinition beanDefinition, BeanWrapper beanWrapper) {
+        Preconditions.checkNotNull(beanWrapper);
+
+        List<PropertyValue> propertyValues = beanDefinition.hasPropertyValues() ? beanDefinition.getPropertyValues() : null;
+        if (propertyValues == null) {
+            return;
+        }
+        BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this);
+
+        for (PropertyValue propertyValue : propertyValues) {
+            String name = propertyValue.getName();
+            Object value = propertyValue.getValue();
+            value = valueResolver.resolveValueIfNecessary(propertyValue, value);
+            for (PropertyDescriptor propertyDescriptor : beanWrapper.getPropertyDescriptors()) {
+                if (propertyDescriptor.getName().equals(name)) {
+                    try {
+                        propertyDescriptor.getWriteMethod().invoke(beanWrapper.getWrappedObject(), value);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    private Object getEarlyBeanReference(String beanName, BeanDefinition beanDefinition, Object bean) {
+        return bean;
     }
 
     private BeanWrapper createBeanInstance(String beanName, BeanDefinition beanDefinition) {

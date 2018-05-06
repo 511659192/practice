@@ -2,6 +2,7 @@ package com.spring.beans.factory.config;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.sun.istack.internal.Nullable;
 import com.sun.org.apache.regexp.internal.REUtil;
 import lombok.Data;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ym on 2018/4/26.
@@ -20,12 +22,14 @@ public class BeanDefinition {
     private Object beanClass;
     private String initMethod;
     private String destoryMethod;
+    private Set<String> processedProperties = Sets.newHashSet();
     private List<PropertyValue> propertyValues = Lists.newArrayList();
     private ConstructorArgumentValues constructorArgumentValues;
     private String beanName;
     private List<String> alias;
     public Object constructorArgumentLock = new Object();
     public Object resolvedConstructorOrFactoryMethod;
+    private String autowire = "byName";
 
     public <T> T getResolvedConstructorOrFactoryMethod() {
         return (T) resolvedConstructorOrFactoryMethod;
@@ -50,6 +54,7 @@ public class BeanDefinition {
     public void addPropertyValue(PropertyValue propertyValue) {
         Preconditions.checkNotNull(propertyValue);
         propertyValues.add(propertyValue);
+        processedProperties.add(propertyValue.getName());
     }
 
     public boolean hasBeanClass() {

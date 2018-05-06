@@ -20,13 +20,12 @@ public class DefaultContentHandler extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
-        System.out.println("DefaultContentHandler.startDocument()");
+//        System.out.println("DefaultContentHandler.startDocument()");
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        System.out.println(String.format("startElement uri=%s localName=%s qname=%s attr=%s", uri, localName, qName, HandlerHelper.getAttrubiteString(attributes)));
-
+//        System.out.println(String.format("startElement uri=%s localName=%s qname=%s attr=%s", uri, localName, qName, HandlerHelper.getAttrubiteString(attributes)));
         new DefaultParserChain(xmlReaderContext).parseStartElement(uri, localName, qName, attributes);
     }
 
@@ -39,7 +38,7 @@ public class DefaultContentHandler extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        System.out.println(String.format("endElement uri=%s localName=%s qname=%s", uri, localName, qName));
+//        System.out.println(String.format("endElement uri=%s localName=%s qname=%s", uri, localName, qName));
         new DefaultParserChain(xmlReaderContext).parseEndElement(uri, localName, qName);
     }
 

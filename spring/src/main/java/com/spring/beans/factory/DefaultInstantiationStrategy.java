@@ -1,6 +1,7 @@
 package com.spring.beans.factory;
 
 import com.spring.beans.factory.config.BeanDefinition;
+import com.spring.util.ReflectionUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -28,21 +29,8 @@ public class DefaultInstantiationStrategy implements InstantiationStrategy {
                     e.printStackTrace();
                 }
             }
-            if ((!Modifier.isPublic(constructorToUse.getModifiers()) || !Modifier.isPublic(constructorToUse.getDeclaringClass().getModifiers()))
-                    && !constructorToUse.isAccessible()) {
-                constructorToUse.setAccessible(true);
-            }
-            try {
-                return constructorToUse.newInstance(new Object[]{});
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
+            return ReflectionUtils.instantiateClass(constructorToUse);
         }
-        return null;
     }
 
     private Object instantiateWithMethodInjection(BeanDefinition beanDefinition, String beanName) {

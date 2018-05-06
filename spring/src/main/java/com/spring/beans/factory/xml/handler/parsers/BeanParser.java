@@ -48,6 +48,12 @@ public class BeanParser implements Parser {
         if (StringUtils.isNotBlank(destoryMethod)) {
             beanDefinition.setDestoryMethod(destoryMethod);
         }
+
+        String autowire = getAttrubite(attributes, AUTOWIRE_ATTRIBUTE);
+        if (StringUtils.isNotBlank(autowire)) {
+            beanDefinition.setAutowire(autowire);
+        }
+
         if (aliases.size() > 0) {
             beanDefinition.setAlias(aliases);
         }

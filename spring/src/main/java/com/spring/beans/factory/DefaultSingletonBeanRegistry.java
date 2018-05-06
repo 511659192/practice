@@ -61,12 +61,22 @@ public class DefaultSingletonBeanRegistry extends DefaultAliasRegstry {
         return bean;
     }
 
-    private void addSingleton(String beanName, Object bean) {
+    public void addSingleton(String beanName, Object bean) {
         synchronized (this.singletonObjects) {
             this.singletonObjects.put(beanName, bean);
             this.singletonFactories.remove(beanName);
             this.earlySingletonObjects.remove(beanName);
             this.registeredSingletons.add(beanName);
+        }
+    }
+
+    protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
+        synchronized (this.singletonObjects) {
+            if (!this.singletonObjects.containsKey(beanName)) {
+                this.singletonFactories.put(beanName, singletonFactory);
+                this.registeredSingletons.add(beanName);
+                this.earlySingletonObjects.remove(beanName);
+            }
         }
     }
 
